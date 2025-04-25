@@ -1,0 +1,12 @@
+services:
+  registry-mysql:
+    image: mysql
+    environment:
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=registry
+    ports:
+      - "3336:3306"
+    #volumes:
+    #  - ./mysql-data:/var/lib/mysql
