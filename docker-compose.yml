@@ -1,4 +1,6 @@
 services:
+  # docker inspect voxacommunications-backend-registry-mysql-1 | grep IPAddress
+  # network mode:voxacommunications-backend_default
   registry-mysql:
     image: mysql
     environment:
@@ -7,6 +9,6 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_DATABASE=registry
     ports:
-      - "3336:3306"
+      - "3308:3306"
     #volumes:
     #  - ./mysql-data:/var/lib/mysql
