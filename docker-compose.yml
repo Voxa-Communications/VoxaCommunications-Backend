@@ -1,6 +1,24 @@
 services:
   # docker inspect voxacommunications-backend-registry-mysql-1 | grep IPAddress
   # network mode:voxacommunications-backend_default
+  registry:
+    image: voxacommunications-registry:latest
+    container_name: voxa-registry
+    depends_on:
+      - registry-mysql
+    environment:
+      - MYSQL_HOST=172.29.0.3
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=registry
+      - MYSQL_PORT=3306
+      - KEY=CHANGETHISINPRODUCTION
+      - PORT=8000
+      - API_URL=http://127.0.0.1:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/logs:ro
   registry-mysql:
     image: mysql
     environment:
