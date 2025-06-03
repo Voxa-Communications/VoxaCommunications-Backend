@@ -35,6 +35,7 @@ services:
   cloudflare-tunnel:
     image: cloudflare/cloudflared:latest
     container_name: voxa-cloudflare-tunnel
+    network_mode: "host"
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
     restart: unless-stopped
     depends_on:
