@@ -10,10 +10,10 @@ services:
     environment:
       - MYSQL_HOST=172.29.0.2
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=password
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=registry
       - MYSQL_PORT=3306
-      - KEY=CHANGETHISINPRODUCTION
+      - KEY=${REGISTRY_KEY}
       - PORT=8000
       - API_URL=http://127.0.0.1:8000
     ports:
@@ -25,10 +25,17 @@ services:
     image: mysql
     environment:
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=registry
     ports:
       - "3308:3306"
     #volumes:
     #  - ./mysql-data:/var/lib/mysql
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: voxa-cloudflare-tunnel
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - registry
