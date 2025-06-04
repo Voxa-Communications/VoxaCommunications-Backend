@@ -1,14 +1,42 @@
 services:
   # docker inspect voxacommunications-backend-registry-mysql-1 | grep IPAddress
   # network mode:voxacommunications-backend_default
+  registry:
+    image: voxacommunications-registry:latest
+    container_name: voxa-registry
+    #network_mode: "host"
+    depends_on:
+      - registry-mysql
+    environment:
+      - MYSQL_HOST=172.29.0.2
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=registry
+      - MYSQL_PORT=3306
+      - KEY=${REGISTRY_KEY}
+      - PORT=8000
+      - API_URL=http://127.0.0.1:8000
+    ports:
+      - "8000:8000/tcp"
+      - "8000:8000/udp"
+    volumes:
+      - ./logs:/logs:ro
   registry-mysql:
     image: mysql
     environment:
       - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=registry
     ports:
       - "3308:3306"
     #volumes:
     #  - ./mysql-data:/var/lib/mysql
+  cloudflare-tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: voxa-cloudflare-tunnel
+    network_mode: "host"
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    restart: unless-stopped
+    depends_on:
+      - registry
