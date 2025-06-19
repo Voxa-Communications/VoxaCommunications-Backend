@@ -41,7 +41,8 @@ services:
       - code=${CODE}
       - env=production
     ports:
-      - "8999:8999"
+      - "8999:8999/tcp"
+      - "8999:8999/udp"
     volumes:
       - ./config:/app/config
   cloudflare-tunnel:
