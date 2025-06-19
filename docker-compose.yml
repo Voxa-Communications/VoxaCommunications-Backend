@@ -36,9 +36,9 @@ services:
     image: voxacommunications-netnode:latest
     container_name: voxacommunications-netnode
     environment:
-      - email=registry_email_here
-      - password=registry_password_here
-      - code=registry_code_here_optional
+      - email=${EMAIL}
+      - password=${PASSWORD}
+      - code=${CODE}
       - env=production
     ports:
       - "8999:8999"
