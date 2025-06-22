@@ -43,6 +43,7 @@ services:
     ports:
       - "8999:8999/tcp"
       - "8999:8999/udp"
+      - "9998:9998"
     volumes:
       - ./config:/app/config
   cloudflare-tunnel:
