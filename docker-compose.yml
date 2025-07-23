@@ -8,7 +8,7 @@ services:
     depends_on:
       - registry-mysql
     environment:
-      - MYSQL_HOST=172.29.0.3
+      - MYSQL_HOST=172.29.0.4
       - MYSQL_USER=root
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=registry
@@ -21,6 +21,21 @@ services:
       - "8000:8000/udp"
     volumes:
       - ./logs:/logs:ro
+  cstellaris-node:
+    image: stellaris-node:latest
+    container_name: cstellaris-node
+    tty: true
+    restart: unless-stopped
+    environment:
+      - DATABASE_PATH=./data/database
+      - NODE_HOST=0.0.0.0
+      - NODE_PORT=5433
+      - DEFAULT_NODES=https://cstellaris-node.connor33341.dev
+      - ENABLE_RATE_LIMITING=true
+    ports:
+      - "5433:5433"
+    volumes:
+      - ./cstellaris-data:/app/data:rw
   registry-mysql:
     image: mysql
     environment:
