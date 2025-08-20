@@ -52,6 +52,11 @@ services:
       - "5432:5432"
     volumes:
       - ./stellaris-data:/app/data:rw
+  stellaris-miner:
+    image: stellaris-miner:latest
+    container_name: stellaris-miner
+    tty: true
+    restart: unless-stopped
   registry-mysql:
     image: mysql
     environment:
