@@ -22,7 +22,7 @@ services:
     volumes:
       - ./logs:/logs:ro
   cstellaris-node:
-    image: stellaris-node:latest
+    image: stellaris-node:classic
     container_name: cstellaris-node
     tty: true
     restart: unless-stopped
@@ -36,6 +36,22 @@ services:
       - "5433:5433"
     volumes:
       - ./cstellaris-data:/app/data:rw
+
+  stellaris-node:
+    image: stellaris-node:latest
+    container_name: stellaris-node
+    tty: true
+    restart: unless-stopped
+    environment:
+      - DATABASE_PATH=./data/database
+      - NODE_HOST=0.0.0.0
+      - NODE_PORT=5432
+      - DEFAULT_NODES=https://stellaris-node.connor33341.dev
+      - ENABLE_RATE_LIMITING=true
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./stellaris-data:/app/data:rw
   registry-mysql:
     image: mysql
     environment:
